@@ -1,0 +1,20 @@
+{
+  "name": "deepgram-connector",
+  "version": "1.0.0",
+  "description": "deepgram-connector",
+  "main": "deepgram-connector.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tony Chan",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@deepgram/sdk": "^3.6.0",
+    "axios": "^1.7.7",
+    "body-parser": "^1.20.2",
+    "cross-fetch": "^4.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-ws": "^5.0.2"
+  }
+}
