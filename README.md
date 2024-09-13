@@ -20,7 +20,7 @@ This connector code will send user's speech transcripts to the Voice API applica
 Sign up with or log in to [Deepgram](https://deepgram.com/).</br>
 
 Create or use an existing Deepgram API key,
-take note of it (as it will be needed as **`DEEPGRAM_API_KEY`** in the next sections).</br>
+take note of it (as it will be needed as **`DEEPGRAM_API_KEY`** in the next section).</br>
 
 ### Local deployment
 
@@ -34,7 +34,7 @@ Set up two domains, one to forward to the local port 6000 (as this Connector app
 Start ngrok to start both tunnels that forward to local ports 6000 and 8000,</br>
 please take note of the ngrok **Enpoint URL** that forwards to local port 6000 as it will be needed when setting the [Voice API application](https://github.com/nexmo-se/voice-app-websockets),
 that URL looks like:</br>
-`xxxxxxxx.ngrok.io`, `xxxxxxxx.herokuapp.com`, `myserver.mycompany.com:32000`  (as **`PROCESSOR_SERVER`** in the .env file of the Voice API application),</br>
+`xxxxxxxx.ngrok.io`, `xxxxxxxx.herokuapp.com`, `myserver.mycompany.com:32000`  (as **`PROCESSOR_SERVER`** in the .env file of the [Voice API application](https://github.com/nexmo-se/voice-app-websockets)),</br>
 no `port` is necessary with ngrok or heroku as public hostname,</br>
 that host name to specify must not have leading protocol text such as https://, wss://, nor trailing /.
 
