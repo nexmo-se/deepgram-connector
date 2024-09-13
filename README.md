@@ -1,107 +1,45 @@
-# Deepgram Connector
+# Deepgram ASR Connector
 
-** TBD -  Update BELOW - Not up to date!
+You can use this Connector code to connect a voice call managed by a Vonage Voice API application to Deepgram Automatic Speech Recognition (ASR) engine. Transcripts are posted back to the Vonage Voice API application.
 
-## What this sample HTTP AI Agent and ASR Connector do
+## About this Connector code
 
-It shows how you can use a third-party ASR (Automatic Speech Recognition) engine with a Vonage AI Agent.</br>
+This connector makes use of the [WebSockets feature](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) of Vonage Voice API. When a voice call is established, the peer Voice API application triggers a WebSocket connection to this Connector and streams the audio from the voice call in real time.
 
-An HTTP type **AI agent** (created in or imported to Vonage AI Studio) uses the **ASR Connector** which handles the voice connectivity including PSTN phone calls, WebRTC calls, or SIP calls, as well as the ASR engine connection, for speech recognition.</br>
+See https://github.com/nexmo-se/voice-app-websockets for a **sample Voice API application** using this Connector code to stream audio from voice calls to Deepgram ASR engine.
 
-How the call flow happens with the sample HTTP AI Agent and the ASR Connector in this repository:</br>
-- A phone call is established first with, let's say, a customer,</br>
-- Customer interacts with the Voice bot (via the AI agent),</br>
-- Call gets transferred to, let's say, a live agent, and the connection with the AI agent is terminated. </br>
+## Transcripts
 
-## How this sample HTTP AI Agent and ASR Connector work
-
-See also the diagram _vonage-ai-asr-connector.png_.</br>
-
-In this diagram, the **ASR Connector** application is shown in two parts for easier description, however both parts are in one source code file in this repository.</br>
-
-First, PSTN 1 leg is established with the customer, it can be an inbound call or an outbound call,</br>
-then a WebSocket leg is established with the ASR Connector (part 1) which sends the audio from the customer to the ASR engine.</br>
-
-With this ASR Connector, we are using Deepgram to do speech recognition.</br>
-
-Received transcriptions are sent to the ASR Connector (part 2).</br>
-
-The ASR Connector (part 2) submits each transcript via HTTP as an _AI Step_ to the AI agent,</br>
-a text result is returned by the AI agent,</br>
-which the ASR Connector (part 2) plays via TTS (Text-to-Speech) to the customer.</br>
-
-Then the customer speaks again, and so on, until the AI agent decides to transfer the call to a live agent,</br>
-upon transfer request by the AI Agent to the ASR Connector (part 2), the call is effectively transferred to the agent, as PSTN call 2, and the interaction with the AI Agent is terminated.</br>
+This connector code will send caller's speech transcripts to the Voice API application via webhook calls.
 
 ## Set up
 
-### Deploy the sample HTTP AI Agent
-
-From AI Studio, import the attached sample AI Agent _BlogAgent.zip_.</br>
-
-For this sample AI Agent, for test and demo purpose, you need to set the live agent phone number,</br>
-to do that, edit this agent,</br>
-go to Properties, Parameters, Custom Parameters, callee,</br>
-change the value to your desired recipient number,</br>
-it must be a phone number in E.164 format without the leading '+' sign,</br>
-click on [Close].</br>
-
-Then [Publish] the AI Agent.</br>
-
-Take note of the:</br>
-- **Agent ID**,</br>
-and
-- The Vonage **AI API key**, see next lines comments.
-
-Do not confuse your _Vonage **AI API key**_ with your _Vonage **account API key**_
-
-If you already have an existing Vonage AI API key, you keep that one,</br>
-if not you may create one,</br>
-to do so, within AI Studio UI, go to the top right corner,</br>
-click on the user icon,</br>
-then "Generate API key",</br>
-take note of it.</br>
-
-Both Agent ID and AI API key values are needed in a next section.
-
 ### Get your credentials from Deepgram
 
-Sign up with or log in to Deepgram.</br>
+Sign up with or log in to [Deepgram](https://deepgram.com/).</br>
 
 Create or use an existing Deepgram API key,
-take note of it (as it will be needed in a next section).</br>
+take note of it (as it will be needed as **`DEEPGRAM_API_KEY`** in the next sections).</br>
 
+### Local deployment
 
-### Set up your Vonage Voice API application credentials and phone number
+For a `local deployment` with ngrok (Internet tunneling service) for both this Connector application and the [Voice API application](https://github.com/nexmo-se/voice-app-websockets), you may set up [multiple ngrok tunnels](https://ngrok.com/docs#multiple-tunnels).
 
-[Log in to your](https://ui.idp.vonage.com/ui/auth/login) or [sign up for a](https://ui.idp.vonage.com/ui/auth/registration) Vonage APIs account.
+To do that, [Download and install ngrok](https://ngrok.com/download), an Internet tunelling service.</br>
+Sign in or sign up with [ngrok](https://ngrok.com/), from the ngrok web UI menu, follow the **Setup and Installation** guide.
 
-Go to [Your applications](https://dashboard.nexmo.com/applications), access an existing application or [+ Create a new application](https://dashboard.nexmo.com/applications/new).
+Set up two domains, one to forward to the local port 6000 (as this Connector application will be listening on port 6000), the other one to the local port 8000 for the [Voice API application](https://github.com/nexmo-se/voice-app-websockets).
 
-Under Capabilities section (click on [Edit] if you do not see this section):
-
-Enable Voice
-- Under Answer URL, leave HTTP GET, and enter https://\<host\>:\<port\>/answer (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running)</br>
-- Under Event URL, **select** HTTP POST, and enter https://\<host\>:\<port\>/event (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running)</br>
-Note: If you are using ngrok for this sample application, the answer URL and event URL look like:</br>
-https://yyyyyyyy.ngrok.io/answer</br>
-https://yyyyyyyy.ngrok.io/event</br> 	
-- Click on [Generate public and private key] if you did not yet create or want new ones, save the private key file in this application folder as .private.key (leading dot in the file name).</br>
-**IMPORTANT**: Do not forget to click on [Save changes] at the bottom of the screen if you have created a new key set.</br>
-- Link a phone number to this application if none has been linked to the application.
-
-Please take note of your **application ID** and the **linked phone number** (as they are needed in the very next section).
-
-For the next steps, you will need:</br>
-- Your [Vonage API key](https://dashboard.nexmo.com/settings) (as **`API_KEY`**)</br>
-- Your [Vonage API secret](https://dashboard.nexmo.com/settings), not signature secret, (as **`API_SECRET`**)</br>
-- Your `application ID` (as **`APP_ID`**),</br>
-- The **`phone number linked`** to your application (as **`SERVICE_PHONE_NUMBER`**), your phone will **call that number**,</br>
-
-### Local setup
+Start ngrok to start both tunnels that forward to local ports 6000 and 8000,</br>
+please take note of the ngrok **Enpoint URL** that forwards to local port 6000 as it will be needed when setting the [Voice API application](https://github.com/nexmo-se/voice-app-websockets),
+that URL looks like:</br>
+`xxxxxxxx.ngrok.io`, `xxxxxxxx.herokuapp.com`, `myserver.mycompany.com:32000`  (as **`PROCESSOR_SERVER`** in the .env file of the Voice API application),</br>
+no `port` is necessary with ngrok or heroku as public hostname,</br>
+that host name to specify must not have leading protocol text such as https://, wss://, nor trailing /.
 
 Copy or rename .env-example to .env<br>
-Update parameters in .env file<br>
+Update the value of parameter **`DEEPGRAM_API_KEY`** in .env file<br>
+
 Have Node.js installed on your system, this application has been tested with Node.js version 18.19.1<br>
 
 Install node modules with the command:<br>
@@ -111,35 +49,16 @@ npm install
 
 Launch the application:<br>
 ```bash
-node asr-connector
+node deepgram-connector
 ```
 
 Default local (not public!) of this application server `port` is: 8000.
 
-## How to test the sample AI Agent and ASR Connector
+### Voice API application
 
-### First PSTN call is outbound
-
-You may trigger the outbound call by opening the following web address<br>
-https://<public_host_name>/startcall?callee=<callee_phone_number><br>
-
-for example:<br>
-https://myserver.mycompany.com:32000/startcall?callee=12995551515<br>
-or<br>
-https://xxxx.ngrok.io/startcall?callee=12995551515<br>
+Set up the peer Voice API application per the instructions in its [repository](https://github.com/nexmo-se/voice-app-websockets).
 
 
-### First PSTN call is inbound
-
-Call the phone number linked to your Vonage API account.
-
-
-### In both cases
-
-Whether the first call is outbound or inbound, the user (e.g. customer) will be asked for a name,<br>
-then some jokes will be played instead of music-on-hold,<br>
-until the user says "no" for no more jokes,<br>
-after which the call is transferred to the other user (e.g. live agent) which phone number is the one that has been set when deploying the AI Agent.
 
 
 
