@@ -24,7 +24,7 @@ take note of it (as it will be needed as **`DEEPGRAM_API_KEY`** in the next sect
 
 ### Local deployment
 
-For a `local deployment` with ngrok (Internet tunneling service) for both this Connector application and the [Voice API application](https://github.com/nexmo-se/voice-app-websockets), you may set up [multiple ngrok tunnels](https://ngrok.com/docs#multiple-tunnels).
+For a `local deployment`, you may use ngrok (Internet tunneling service) for both this Connector application and the [Voice API application](https://github.com/nexmo-se/voice-app-websockets), using [multiple ngrok tunnels](https://ngrok.com/docs#multiple-tunnels).
 
 To do that, [Download and install ngrok](https://ngrok.com/download), an Internet tunelling service.</br>
 Sign in or sign up with [ngrok](https://ngrok.com/), from the ngrok web UI menu, follow the **Setup and Installation** guide.
