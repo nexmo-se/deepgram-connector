@@ -38,10 +38,14 @@ that URL looks like:</br>
 no `port` is necessary with ngrok or heroku as public hostname,</br>
 that host name to specify must not have leading protocol text such as https://, wss://, nor trailing /.
 
-Copy or rename .env-example to .env<br>
+Copy the `.env.example` file over to a new file called `.env`:
+```bash
+cp .env.example .env
+```
+
 Update the value of parameter **`DEEPGRAM_API_KEY`** in .env file<br>
 
-Have Node.js installed on your system, this application has been tested with Node.js version 18.19.1<br>
+Have Node.js installed on your system, this application has been tested with Node.js version 18.19<br>
 
 Install node modules with the command:<br>
  ```bash
