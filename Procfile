@@ -1,1 +1,1 @@
-web: node ./asr-connector.js
+web: node ./deepgram-connector.js
