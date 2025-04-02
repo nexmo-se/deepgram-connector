@@ -63,10 +63,9 @@ Default local (not public!) of this application server `port` is: 8000.
 
 Set up the peer Voice API application per the instructions in its [repository](https://github.com/nexmo-se/voice-app-websockets).
 
+Call in to the phone number as set up in that application to use Deepgram ASR (Automatic Speech Recognition), aka STT (Speech-to-Text) engine.
 
-
-
-
+Instead of using the [sample Voice API application](https://github.com/nexmo-se/voice-app-websockets), you may instead update and use your existing Voice API application to connect voice calls via [WebSockets](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) to this Connector Application.
 
 
 
