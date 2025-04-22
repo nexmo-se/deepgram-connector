@@ -4,10 +4,6 @@
 
 require('dotenv').config();
 
-//--- for Neru installation ----
-const neruHost = process.env.NERU_HOST;
-console.log('neruHost:', neruHost);
-
 //--
 const express = require('express');
 const bodyParser = require('body-parser')
@@ -32,9 +28,9 @@ app.use(function (req, res, next) {
 
 //---
 
-// Only if needed - For self-signed certificate in chain - In test environment
-// Do not uncomment in production environment
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+// ONLY if needed - For self-signed certificate in chain - In test environment
+// Must leave next line as a comment in production environment
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 //---- DeepGram ASR engine ----
 
@@ -45,7 +41,6 @@ const dgApiKey = process.env.DEEPGRAM_API_KEY;
 //--- Websocket server (for WebSockets from Vonage Voice API platform)- Deepgram transcribe live streaming audio ---
 
 app.ws('/socket', async (ws, req) => {
-
 
   const originalUuid = req.query.original_uuid;
   const webhookUrl = req.query.webhook_url;
@@ -66,11 +61,12 @@ app.ws('/socket', async (ws, req) => {
   console.log('Listening on Deepgram connection');
 
   let deepgram = deepgramClient.listen.live({       
-    model: "nova-2",
-    smart_format: true,      
-    language: "en-US",        
+    model: process.env.DEEPGRAM_ASR_MODEL,
+    smart_format: false,   
+    language: process.env.DEEPGRAM_ASR_LANGUAGE,        
     encoding: "linear16",
-    sample_rate: 16000
+    sample_rate: 16000,
+    punctuate: process.env.DEEPGRAM_ASR_PUNCTUATE
   });
 
   console.log('Listener on connection to DeepGram');
@@ -79,13 +75,16 @@ app.ws('/socket', async (ws, req) => {
     console.log("deepgram: connected");
 
     deepgram.addListener(LiveTranscriptionEvents.Transcript, async (data) => {
+      
+      // console.log('\n');
       // console.log(JSON.stringify(data));
+      
       const transcript = data.channel.alternatives[0].transcript;
 
       if (transcript != '') {
         console.log('\n>>> Transcript:', transcript);
-        // to do post back transcript to Voice API app
-
+        
+        // post back transcript to Voice API app
         const response = await axios.post(webhookUrl,
           {
             "user": user,
@@ -93,15 +92,12 @@ app.ws('/socket', async (ws, req) => {
             "transcript": transcript
           },
           {
-          headers: {
-            "Content-Type": 'application/json'
+            headers: {
+              "Content-Type": 'application/json'
+            }
           }
-        }
         );  
-
-
       }   
-
     });
 
     deepgram.addListener(LiveTranscriptionEvents.Close, async () => {
@@ -166,7 +162,7 @@ app.ws('/socket', async (ws, req) => {
 
 });
 
-//--- If this application is hosted on VCR (Vonage Code Runtime) serverless infrastructure (aka Neru) --------
+//--- If this application is hosted on VCR (Vonage Cloud Runtime) serverless infrastructure --------
 
 app.get('/_/health', async(req, res) => {
 
@@ -176,9 +172,9 @@ app.get('/_/health', async(req, res) => {
 
 //=========================================
 
-const port = process.env.NERU_APP_PORT || process.env.PORT || 6000;
+const port = process.env.VCR_PORT || process.env.PORT || 6000;
 
-app.listen(port, () => console.log(`Voice API application listening on port ${port}!`));
+app.listen(port, () => console.log(`Connector application listening on port ${port}!`));
 
 //------------
 

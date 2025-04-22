@@ -7,7 +7,7 @@ You can use this Connector code to connect a voice call managed by a Vonage Voic
 This connector makes use of the [WebSockets feature](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) of Vonage Voice API.</br>
 When a voice call is established, the peer Voice API application triggers a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
 
-See https://github.com/nexmo-se/voice-app-websockets for a **sample Voice API application** using this Connector code to stream audio from voice calls to Deepgram ASR engine.
+See https://github.com/nexmo-se/voice-to-ai-engines for a **sample Voice API application** using this Connector code to stream audio from voice calls to Deepgram ASR engine.
 
 ## Transcripts
 
@@ -43,7 +43,12 @@ Copy the `.env.example` file over to a new file called `.env`:
 cp .env.example .env
 ```
 
-Update the value of parameter **`DEEPGRAM_API_KEY`** in .env file<br>
+Update the value of parameter **`DEEPGRAM_API_KEY`** in the .env file<br>
+
+Depending on your use case, you may update the other paramaters in the .env file.
+
+For example, to use Deepgram Nova-3 Medical model, set<br>
+**`DEEPGRAM_ASR_MODEL`** to nova-3-medical.
 
 Have Node.js installed on your system, this application has been tested with Node.js version 18.19<br>
 
@@ -63,9 +68,9 @@ Default local (not public!) of this application server `port` is: 8000.
 
 Set up the peer Voice API application per the instructions in its [repository](https://github.com/nexmo-se/voice-app-websockets).
 
-Call in to the phone number as set up in that application to use Deepgram ASR (Automatic Speech Recognition), aka STT (Speech-to-Text) engine.
+Call in to the phone number as set up in that application or call out from that application to use Deepgram ASR (Automatic Speech Recognition), aka STT (Speech-to-Text) engine.
 
-Instead of using the [sample Voice API application](https://github.com/nexmo-se/voice-app-websockets), you may instead update and use your existing Voice API application to connect voice calls via [WebSockets](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) to this Connector Application.
+Instead of using the [sample Voice API application](https://github.com/nexmo-se/voice-to-ai-engines), you may instead update and use your existing Voice API application to connect voice calls via [WebSockets](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) to this Connector Application.
 
 
 
