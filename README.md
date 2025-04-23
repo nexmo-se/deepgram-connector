@@ -48,7 +48,7 @@ Update the value of parameter **`DEEPGRAM_API_KEY`** in the .env file<br>
 Depending on your use case, you may update the other paramaters in the .env file.
 
 For example, to use Deepgram Nova-3 Medical model, set<br>
-**`DEEPGRAM_ASR_MODEL`** to nova-3-medical.
+**`DEEPGRAM_ASR_MODEL`** to **`nova-3-medical`**.
 
 Have Node.js installed on your system, this application has been tested with Node.js version 18.19<br>
 
@@ -66,7 +66,7 @@ Default local (not public!) of this application server `port` is: 8000.
 
 ### Voice API application
 
-Set up the peer Voice API application per the instructions in its [repository](https://github.com/nexmo-se/voice-app-websockets).
+Set up the peer Voice API application per the instructions in its [repository](https://github.com/nexmo-se/voice-to-ai-engines).
 
 Call in to the phone number as set up in that application or call out from that application to use Deepgram ASR (Automatic Speech Recognition), aka STT (Speech-to-Text) engine.
 
