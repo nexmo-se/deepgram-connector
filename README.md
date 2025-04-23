@@ -1,6 +1,6 @@
 # Deepgram ASR Connector
 
-You can use this Connector code to connect a voice call managed by a Vonage Voice API application to Deepgram Automatic Speech Recognition (ASR) engine. Transcripts are posted back to the Vonage Voice API application.
+You can use this Connector code to send audio from a Vonage API voice call or video call to Deepgram Automatic Speech Recognition (ASR) engine for real-time transcription.
 
 ## About this Connector code
 
@@ -8,9 +8,9 @@ This connector makes use of the WebSockets feature of [Vonage Voice API](https:/
 
 When a voice call is established, the peer Voice API application triggers a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
 
-See https://github.com/nexmo-se/voice-to-ai-engines for a **sample Voice API application** using this Connector code to stream audio from voice calls to Deepgram ASR engine.
+See https://github.com/nexmo-se/voice-to-ai-engines for a **sample Voice API application** using this Connector code to stream audio from voice calls in real-time to Deepgram ASR engine.
 
-With a video client, the Audio Connector opens a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
+With a video client, the Audio Connector opens a WebSocket connection to this Connector and streams the audio in real time to Deepgram ASR engine.
 
 ## Transcripts
 
