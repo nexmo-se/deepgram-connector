@@ -4,14 +4,17 @@ You can use this Connector code to connect a voice call managed by a Vonage Voic
 
 ## About this Connector code
 
-This connector makes use of the [WebSockets feature](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) of Vonage Voice API.</br>
+This connector makes use of the WebSockets feature of [Vonage Voice API](https://developer.vonage.com/en/voice/voice-api/concepts/websockets) or [Vonage Video API](https://tokbox.com/developer/guides/audio-connector/) 
+
 When a voice call is established, the peer Voice API application triggers a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
 
 See https://github.com/nexmo-se/voice-to-ai-engines for a **sample Voice API application** using this Connector code to stream audio from voice calls to Deepgram ASR engine.
 
+With a video client, the Audio Connector opens a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
+
 ## Transcripts
 
-This connector code will send user's speech transcripts to the Voice API application via webhook calls.
+This connector code will receive and display the user's speech transcripts in real-time and also forward them to the Voice API application via webhook calls.
 
 ## Set up
 
