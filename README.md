@@ -8,7 +8,7 @@ This connector makes use of the WebSockets feature of [Vonage Voice API](https:/
 
 When a voice call is established, the peer Voice API application triggers a WebSocket connection to this Connector then streams the audio from the voice call in real time. 
 
-See https://github.com/nexmo-se/voice-to-ai-engines for a **sample Voice API application** using this Connector code to stream audio from voice calls in real-time to Deepgram ASR engine.
+See https://github.com/nexmo-se/voice-to-ai-engines or https://github.com/nexmo-se/conference-asr-per-call-leg for a **sample Voice API application** using this Connector code to stream audio from voice calls in real-time to Deepgram ASR engine.
 
 With a video client, the Audio Connector opens a WebSocket connection to this Connector and streams the audio in real time to Deepgram ASR engine.
 
