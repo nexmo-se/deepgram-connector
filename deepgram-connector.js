@@ -42,7 +42,7 @@ const dgApiKey = process.env.DEEPGRAM_API_KEY;
 
 app.ws('/socket', async (ws, req) => {
 
-  const originalUuid = req.query.original_uuid;
+  const peerUuid = req.query.peer_uuid;
   const webhookUrl = req.query.webhook_url;
   const user = req.query.user;
   const remoteParty = req.query.remote_party;
@@ -50,7 +50,7 @@ app.ws('/socket', async (ws, req) => {
   //--
 
   console.log('>>> websocket connected with');
-  console.log('original call uuid:', originalUuid);
+  console.log('peer call uuid:', peerUuid);
 
   //--
 
@@ -89,6 +89,7 @@ app.ws('/socket', async (ws, req) => {
           {
             "user": user,
             "remoteParty": remoteParty,
+            "call_uuid": peerUuid, 
             "transcript": transcript
           },
           {
