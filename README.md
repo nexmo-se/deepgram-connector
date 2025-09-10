@@ -56,7 +56,7 @@ Depending on your use case, you may update the other paramaters in the .env file
 For example, to use Deepgram Nova-3 Medical model, set<br>
 **`DEEPGRAM_ASR_MODEL`** to **`nova-3-medical`**.
 
-Have Node.js installed on your system, this application has been tested with Node.js version 18.19<br>
+Have Node.js installed on your system, this application has been tested with Node.js version 22.16<br>
 
 Install node modules with the command:<br>
  ```bash
