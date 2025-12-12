@@ -32,10 +32,10 @@ app.use(function (req, res, next) {
 // Must leave next line as a comment in production environment
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-//---- DeepGram ASR engine ----
+//---- DeepGram STT engine ----
 
 const { createClient, LiveTranscriptionEvents } = require("@deepgram/sdk");
-const fetch = require("cross-fetch");
+// const fetch = require("cross-fetch");
 const dgApiKey = process.env.DEEPGRAM_API_KEY;
 
 //--- Websocket server (for WebSockets from Vonage Voice API platform)- Deepgram transcribe live streaming audio ---
@@ -43,14 +43,20 @@ const dgApiKey = process.env.DEEPGRAM_API_KEY;
 app.ws('/socket', async (ws, req) => {
 
   const peerUuid = req.query.peer_uuid;
-  const webhookUrl = req.query.webhook_url;
   const user = req.query.user;
   const remoteParty = req.query.remote_party;
+  const callee = req.query.callee;
+  const webhookUrl = req.query.webhook_url;
 
   //--
 
-  console.log('>>> websocket connected with');
-  console.log('peer call uuid:', peerUuid);
+  if (peerUuid) {
+    console.log('>>> websocket connected with');
+    console.log('peer call uuid:', peerUuid);
+  }  
+
+  console.log('>>> webhook URL to post back results');
+  console.log(webhookUrl);
 
   //--
 
@@ -61,13 +67,20 @@ app.ws('/socket', async (ws, req) => {
   console.log('Listening on Deepgram connection');
 
   let deepgram = deepgramClient.listen.live({       
-    model: process.env.DEEPGRAM_ASR_MODEL,
-    smart_format: false,   
-    language: process.env.DEEPGRAM_ASR_LANGUAGE,        
-    encoding: "linear16",
-    sample_rate: 16000,
-    punctuate: process.env.DEEPGRAM_ASR_PUNCTUATE
+    model: process.env.DEEPGRAM_STT_MODEL,
+    smart_format: process.env.DEEPGRAM_STT_SMART_FORMAT,   
+    language: process.env.DEEPGRAM_STT_LANGUAGE,        
+    encoding: "linear16", // do not change
+    sample_rate: 16000, // do not change
+    punctuate: process.env.DEEPGRAM_STT_PUNCTUATE,
+    diarize: process.env.DEEPGRAM_STT_DIARIZE,
+    diarize_speaker_count: process.env.DEEPGRAM_STT_DIARIZE_SPEAKER_COUNT,
+    endpointing: process.env.DEEPGRAM_STT_ENDPOINTING,
+    // diarize: "v2",
+    // vad_turnoff: 0.1,
+    // utt_split: 0.3
   });
+
 
   console.log('Listener on connection to DeepGram');
 
@@ -82,7 +95,9 @@ app.ws('/socket', async (ws, req) => {
       const transcript = data.channel.alternatives[0].transcript;
 
       if (transcript != '') {
-        console.log('\n>>> Transcript:', transcript);
+        // console.log('\n>>> Data:', data);
+        console.log('\n>>> Data:', data.channel.alternatives[0]);
+        // console.log('\n>>> Transcript:', transcript);
         
         // post back transcript to Voice API app
         const response = await axios.post(webhookUrl,
